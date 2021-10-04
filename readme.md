@@ -31,17 +31,17 @@ This tables shows which features that has been implemented by this repository.
 | Unit Test                       | :heavy_exclamation_mark:            |
 | Api Documentation with Swagger  | :x:                                 |
 
+# How to Run this project
 
-- How to Run this project
-    - Clone this project
-    - Open this project with your IDE
-    - Create database on postgre "alami_transaction"
-    - Create database on Mongodb "alami_transaction"
-    - Run and build this project
-    - import the collection postman for test endpoint
+- Clone this project
+- Open this project with your IDE
+- Create database on postgre "alami_transaction"
+- Create database on Mongodb "alami_transaction"
+- Run and build this project
+- import the collection postman for test endpoint
     
 
-- Type for transaction endpoint
+# Type for create transaction
 
 | Code  | Type             |
 | ----- | -----------------|
