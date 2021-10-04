@@ -13,6 +13,7 @@ import com.java.alami.vo.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +64,7 @@ public class TransactionController {
     }
 
     @GetMapping("/logs/{id_member}")
-    public List<TransactionLogsDto> getTransactionLogByMember(@PathVariable Long id_member){
-        return mongoService.getTransactionLogsByMember(id_member);
+    public Page<TransactionLogsDto> getTransactionLogByMember(@PathVariable Long id_member, Pageable pageable){
+        return mongoService.getTransactionLogsByMember(id_member, pageable);
     }
 }

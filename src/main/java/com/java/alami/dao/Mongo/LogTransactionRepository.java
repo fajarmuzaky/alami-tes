@@ -8,5 +8,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface LogTransactionRepository extends MongoRepository<TransactionLogs, Long> {
-    List<TransactionLogsDto> findByMemberId(Long id_member);
+    List<TransactionLogs> findByMemberId(Long id_member);
 }

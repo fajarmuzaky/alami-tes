@@ -59,7 +59,7 @@ public class TransactionService {
     public Transaction toTransaction(TransactionRequest transactionRequest, Transaction transaction) {
         Member member = memberRepository.findByEmail(transactionRequest.getEmail());
         if (member == null){
-            throw new RuntimeException("Cannot find member with email" + transactionRequest.getEmail());
+            throw new RuntimeException("Cannot find member with email " + transactionRequest.getEmail());
         }
         int type = TransactionTypes.getTransactionTypeId(transactionRequest.getType());
         if (type == 0) {
@@ -91,7 +91,7 @@ public class TransactionService {
     public List<TransactionDto> getTransactionByMember(Long id_member){
         Optional<Member> resultMember = memberRepository.findById(id_member);
         if(resultMember.isEmpty()) {
-            throw new RuntimeException("cannot found user with id" + id_member);
+            throw new RuntimeException("cannot found user with id " + id_member);
         }
         Member member = resultMember.get();
         return transactionRepository.findByMember(member);

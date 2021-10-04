@@ -26,7 +26,7 @@ public class WithdrawService {
         Deposit deposit = new Deposit();
         Member member = memberRepository.findByEmail(email);
         if (member == null){
-            throw new RuntimeException("Cannot find member with email" + email);
+            throw new RuntimeException("Cannot find member with email " + email);
         }
         Deposit checkDeposit = depositRepository.findByIdMember(member);
         Date date = new Date();

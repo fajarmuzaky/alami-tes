@@ -33,7 +33,7 @@ public class LoanService {
         Loan loan = new Loan();
         Member member = memberRepository.findByEmail(email);
         if (member == null){
-            throw new RuntimeException("Cannot find member with email" + email);
+            throw new RuntimeException("Cannot find member with email " + email);
         }
         Loan checkLoan = loanRepository.findByMember(member);
         Date date = new Date();

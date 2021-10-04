@@ -47,7 +47,7 @@ public class MongoService {
     public TransactionLogs logTransaction(TransactionRequest transactionRequest, Long id, TransactionLogs transactionLogs) {
         Member member = logMemberRepository.findByEmail(transactionRequest.getEmail());
         if (member == null){
-            throw new RuntimeException("Cannot find member with email" + transactionRequest.getEmail());
+            throw new RuntimeException("Cannot find member with email " + transactionRequest.getEmail());
         }
         int type = TransactionTypes.getTransactionTypeId(transactionRequest.getType());
         if (type == 0) {
@@ -69,13 +69,15 @@ public class MongoService {
         return transactionPage.map(TransactionLogsDto::create);
     }
 
-    public List<TransactionLogsDto> getTransactionLogsByMember(Long id_member){
+    public Page<TransactionLogsDto> getTransactionLogsByMember(Long id_member, Pageable pageable){
         Optional<Member> resultMember = logMemberRepository.findById(id_member);
         if(resultMember.isEmpty()) {
-            throw new RuntimeException("cannot found user with id" + id_member);
+            throw new RuntimeException("cannot found user with id " + id_member);
         }
         Member member = resultMember.get();
-        return logTransactionRepository.findByMemberId(id_member);
+        List<TransactionLogs> transactionList = logTransactionRepository.findByMemberId(id_member);
+        Page<TransactionLogs> transactionPage = new PageImpl<>(transactionList, pageable, transactionList.size());
+        return transactionPage.map(TransactionLogsDto::create);
     }
 
 }

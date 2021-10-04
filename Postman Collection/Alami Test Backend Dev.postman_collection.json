@@ -1,0 +1,135 @@
+{
+	"info": {
+		"_postman_id": "c395fb11-f54b-433a-8c75-39c1f2d918b8",
+		"name": "Alami Test Backend Dev",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Member",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"start\" : 1,\r\n    \"length\" : 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8280/api/members"
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Member",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Joko Widodo\",\r\n    \"email\" : \"joko.widodo@alami.id\",\r\n    \"day_of_birth\" : \"10-03-1993\",\r\n    \"address\" : \"Dusun Pisang Rt 10 Rw 20\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8280/api/members"
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\" : \"wawan.setiawan@alami.id\",\r\n    \"type\" : \"DEPOSIT\",\r\n    \"amount\" : 5000000,\r\n    \"created_at\" : \"01-12-2020\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8280/api/transaction"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction List Postgre",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"start\" : 1,\r\n    \"length\" : 10,\r\n    \"start_of_date\" : \"16-08-2020\",\r\n    \"end_of_date\" : \"19-08-2020\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8280/api/transaction"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction Logs From Mongo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"start\" : 1,\r\n    \"length\" : 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8280/api/transaction/logs"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction By Id Member From Mongo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"start\" : 1,\r\n    \"length\" : 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8280/api/transaction/logs/18"
+			},
+			"response": []
+		}
+	]
+}
