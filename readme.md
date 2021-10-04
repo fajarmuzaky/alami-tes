@@ -27,7 +27,7 @@ This tables shows which features that has been implemented by this repository.
 | Create Transaction              | :white_check_mark:                  |
 | Get All Transaction Log         | :white_check_mark:                  |
 | Create Transaction Log By ID Member         | :white_check_mark:      |
-| Create Log to Kafka             | :heavy_exclamation_mark:            |
+| Create Log using Kafka             | :heavy_exclamation_mark:            |
 | Unit Test                       | :heavy_exclamation_mark:            |
 | Api Documentation with Swagger  | :x:                                 |
 
