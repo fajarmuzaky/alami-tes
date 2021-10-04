@@ -29,7 +29,7 @@ public class LoanService {
         return loanPage.map(LoanDto::create);
     }
 
-    public Loan toLoan(String email, Integer amount) {
+    public Loan toLoan(String email, Integer amount, Date created_at) {
         Loan loan = new Loan();
         Member member = memberRepository.findByEmail(email);
         if (member == null){
@@ -38,12 +38,13 @@ public class LoanService {
         Loan checkLoan = loanRepository.findByMember(member);
         Date date = new Date();
         loan.setMember(member);
-        loan.setCreated_at(date);
+        loan.setCreated_at(created_at);
         if( checkLoan != null){
             Integer newAmount = checkLoan.getAmount() + amount;
             loan.setId(checkLoan.getId());
+            loan.setCreated_at(checkLoan.getCreated_at());
             loan.setAmount(newAmount);
-            loan.setUpdated_at(date);
+            loan.setUpdated_at(created_at);
             return loanRepository.save(loan);
         }
         loan.setAmount(amount);
@@ -51,7 +52,7 @@ public class LoanService {
     }
 
     public LoanDto createLoan(LoanRequest loanRequest){
-        Loan loan = toLoan(loanRequest.getEmail(), loanRequest.getAmount());
+        Loan loan = toLoan(loanRequest.getEmail(), loanRequest.getAmount(), loanRequest.getCreated_at());
         return LoanDto.create(loan);
     }
 }

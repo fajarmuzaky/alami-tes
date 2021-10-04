@@ -16,10 +16,12 @@ import java.util.Optional;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final MongoService mongoService;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository){
+    public MemberService(MemberRepository memberRepository, MongoService mongoService){
         this.memberRepository = memberRepository;
+        this.mongoService = mongoService;
     }
 
     public Pagination<MemberDto> findAll(Pageable pageable, Integer draw){
@@ -44,6 +46,7 @@ public class MemberService {
             throw new MemberRegistrationException("Member with email " + memberRequest.getEmail() + " already exists");
         }
         Member memberCreate = toMembers(memberRequest, new Member());
+        Member memberCreateToMongo = mongoService.logMembers(memberRequest, memberCreate.getId(), new Member());
         return MemberDto.create(memberCreate);
     }
 

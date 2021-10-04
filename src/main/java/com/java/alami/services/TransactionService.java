@@ -6,6 +6,7 @@ import com.java.alami.dao.TransactionRepository;
 import com.java.alami.dto.TransactionDto;
 import com.java.alami.entity.Member;
 import com.java.alami.entity.Transaction;
+import com.java.alami.entity.TransactionLogs;
 import com.java.alami.filters.TransactionFilter;
 import com.java.alami.requests.TransactionRequest;
 import com.java.alami.spesifications.TransactionSpecification;
@@ -28,6 +29,7 @@ public class TransactionService {
     private final DepositService depositService;
     private final WithdrawService withdrawService;
     private final RepaymentService repaymentService;
+    private final MongoService mongoService;
 
     @Autowired
     public TransactionService(LoanService loanService,
@@ -35,13 +37,15 @@ public class TransactionService {
                               TransactionRepository transactionRepository,
                               DepositService depositService,
                               WithdrawService withdrawService,
-                              RepaymentService repaymentService){
+                              RepaymentService repaymentService,
+                              MongoService mongoService){
         this.loanService = loanService;
         this.memberRepository = memberRepository;
         this.transactionRepository = transactionRepository;
         this.depositService = depositService;
         this.withdrawService = withdrawService;
         this.repaymentService = repaymentService;
+        this.mongoService = mongoService;
     }
 
     public Pagination<TransactionDto> getAllTransaction(TransactionFilter transactionFilter, Pageable pageable, Integer draw) {
@@ -64,21 +68,22 @@ public class TransactionService {
         Date date = new Date();
         transaction.setMember(member);
         transaction.setTransactionType(type);
-        transaction.setCreated_at(transaction.getCreated_at());
+        transaction.setCreated_at(transactionRequest.getCreated_at());
         transaction.setAmount(transactionRequest.getAmount());
         return transactionRepository.save(transaction);
     }
 
     public TransactionDto create(TransactionRequest transactionRequest){
         Transaction transaction = toTransaction(transactionRequest, new Transaction());
+        TransactionLogs logTransaction = mongoService.logTransaction(transactionRequest, transaction.getId(), new TransactionLogs());
         if (transaction.getTransactionType() == TransactionTypes.DEPOSIT) {
-            depositService.toDeposit(transactionRequest.getEmail(), transactionRequest.getAmount());
+            depositService.toDeposit(transactionRequest.getEmail(), transactionRequest.getAmount(), transactionRequest.getCreated_at());
         } else if (transaction.getTransactionType() == TransactionTypes.lOAN) {
-            loanService.toLoan(transactionRequest.getEmail(), transactionRequest.getAmount());
+            loanService.toLoan(transactionRequest.getEmail(), transactionRequest.getAmount(), transactionRequest.getCreated_at());
         } else if (transaction.getTransactionType() == TransactionTypes.WITHDRAW) {
             withdrawService.toWithdraw(transactionRequest.getEmail(), transactionRequest.getAmount());
         } else if (transaction.getTransactionType() == TransactionTypes.REPAYMENT) {
-            repaymentService.toRepayment(transactionRequest.getEmail(), transactionRequest.getAmount());
+            repaymentService.toRepayment(transactionRequest.getEmail(), transactionRequest.getAmount(), transactionRequest.getCreated_at());
         }
         return TransactionDto.create(transaction);
     }

@@ -29,7 +29,7 @@ public class DepositService {
         return depositPage.map(DepositDto::create);
     }
 
-    public Deposit toDeposit(String email, Integer amount) {
+    public Deposit toDeposit(String email, Integer amount, Date created_at) {
         Deposit deposit = new Deposit();
         Member member = memberRepository.findByEmail(email);
         if (member == null){
@@ -38,13 +38,13 @@ public class DepositService {
         Deposit checkDeposit = depositRepository.findByIdMember(member);
         Date date = new Date();
         deposit.setMember(member);
-        deposit.setCreated_at(date);
+        deposit.setCreated_at(created_at);
         if( checkDeposit != null){
             Integer newBalance = checkDeposit.getBalance() + amount;
             deposit.setId(checkDeposit.getId());
             deposit.setBalance(newBalance);
             deposit.setCreated_at(checkDeposit.getCreated_at());
-            deposit.setUpdated_at(date);
+            deposit.setUpdated_at(created_at);
             return depositRepository.save(deposit);
         }
         deposit.setBalance(amount);
@@ -52,7 +52,7 @@ public class DepositService {
     }
 
     public DepositDto createDeposit(DepositRequest depositRequest){
-        Deposit deposit = toDeposit(depositRequest.getEmail(), depositRequest.getAmount());
+        Deposit deposit = toDeposit(depositRequest.getEmail(), depositRequest.getAmount(), depositRequest.getCreated_at());
         return DepositDto.create(deposit);
     }
 }

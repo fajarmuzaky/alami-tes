@@ -2,12 +2,16 @@ package com.java.alami.controllers;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.java.alami.dto.TransactionDto;
+import com.java.alami.dto.TransactionLogsDto;
+import com.java.alami.entity.TransactionLogs;
 import com.java.alami.filters.TransactionFilter;
 import com.java.alami.requests.TransactionFilterRequest;
 import com.java.alami.requests.TransactionRequest;
+import com.java.alami.services.MongoService;
 import com.java.alami.services.TransactionService;
 import com.java.alami.vo.Pagination;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -22,9 +26,11 @@ import java.util.List;
 @Slf4j
 public class TransactionController {
     private final TransactionService transactionService;
+    private final MongoService mongoService;
 
-    public TransactionController(TransactionService transactionService){
+    public TransactionController(TransactionService transactionService, MongoService mongoService){
         this.transactionService = transactionService;
+        this.mongoService = mongoService;
     }
 
     @GetMapping
@@ -45,5 +51,19 @@ public class TransactionController {
     @GetMapping("/{id_member}")
     public List<TransactionDto> getTransactionByMember(@PathVariable Long id_member){
         return transactionService.getTransactionByMember(id_member);
+    }
+
+    @GetMapping("/logs")
+    public Page<TransactionLogsDto> getTransactionLogs(@RequestBody @Valid TransactionFilterRequest transactionFilterRequest, Integer draw) {
+        TransactionFilter transactionFilter = new TransactionFilter();
+        transactionFilter.setStartDate(transactionFilterRequest.getStart_of_date());
+        transactionFilter.setEndDate(transactionFilterRequest.getEnd_of_date());
+        PageRequest pageRequest = PageRequest.of(transactionFilterRequest.getStart()/ transactionFilterRequest.getLength(), transactionFilterRequest.getLength(), Sort.by("id").descending());
+        return mongoService.getTransactionLogs(transactionFilter, pageRequest, draw);
+    }
+
+    @GetMapping("/logs/{id_member}")
+    public List<TransactionLogsDto> getTransactionLogByMember(@PathVariable Long id_member){
+        return mongoService.getTransactionLogsByMember(id_member);
     }
 }
