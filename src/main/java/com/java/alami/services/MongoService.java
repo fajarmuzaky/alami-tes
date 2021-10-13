@@ -10,13 +10,13 @@ import com.java.alami.filters.TransactionFilter;
 import com.java.alami.requests.MemberRequest;
 import com.java.alami.requests.TransactionRequest;
 import com.java.alami.spesifications.TransactionSpecification;
-import com.java.alami.utils.KafkaProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,21 +44,8 @@ public class MongoService {
         return logMemberRepository.save(member);
     }
 
-    public TransactionLogs logTransaction(TransactionRequest transactionRequest, Long id, TransactionLogs transactionLogs) {
-        Member member = logMemberRepository.findByEmail(transactionRequest.getEmail());
-        if (member == null){
-            throw new RuntimeException("Cannot find member with email " + transactionRequest.getEmail());
-        }
-        int type = TransactionTypes.getTransactionTypeId(transactionRequest.getType());
-        if (type == 0) {
-            throw new RuntimeException("Cannot log this transaction cause type is not defined");
-        }
-        transactionLogs.setId(id);
-        transactionLogs.setMemberId(member.getId());
-        transactionLogs.setMemberName(member.getName());
-        transactionLogs.setTransactionType(type);
-        transactionLogs.setCreated_at(transactionRequest.getCreated_at());
-        transactionLogs.setAmount(transactionRequest.getAmount());
+    public TransactionLogs create(TransactionLogsDto transactionLogsDto){
+        TransactionLogs transactionLogs = TransactionLogs.mapperCreateLogs(transactionLogsDto);
         return logTransactionRepository.save(transactionLogs);
     }
 
@@ -71,7 +58,7 @@ public class MongoService {
 
     public Page<TransactionLogsDto> getTransactionLogsByMember(Long id_member, Pageable pageable){
         Optional<Member> resultMember = logMemberRepository.findById(id_member);
-        if(resultMember.isEmpty()) {
+        if(! resultMember.isPresent()) {
             throw new RuntimeException("cannot found user with id " + id_member);
         }
         Member member = resultMember.get();

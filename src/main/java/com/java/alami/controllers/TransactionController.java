@@ -1,9 +1,7 @@
 package com.java.alami.controllers;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.java.alami.dto.TransactionDto;
 import com.java.alami.dto.TransactionLogsDto;
-import com.java.alami.entity.TransactionLogs;
 import com.java.alami.filters.TransactionFilter;
 import com.java.alami.requests.TransactionFilterRequest;
 import com.java.alami.requests.TransactionRequest;
@@ -19,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -45,7 +43,7 @@ public class TransactionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TransactionDto create(@RequestBody @Valid TransactionRequest transactionRequest){
+    public TransactionDto create(@RequestBody @Valid TransactionRequest transactionRequest) throws ParseException {
         return transactionService.create(transactionRequest);
     }
 

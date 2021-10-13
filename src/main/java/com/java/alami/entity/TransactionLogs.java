@@ -1,5 +1,6 @@
 package com.java.alami.entity;
 
+import com.java.alami.dto.TransactionLogsDto;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,7 +12,7 @@ import java.util.Date;
 @Data
 public class TransactionLogs {
     @Id
-    private Long id;
+    private String id;
 
     @Column(name = "id_member")
     private Long memberId;
@@ -20,7 +21,7 @@ public class TransactionLogs {
     private String memberName;
 
     @Column(name = "transaction_type")
-    private int transactionType;
+    private String transactionType;
 
     @Column(name = "amount")
     private Integer amount;
@@ -31,4 +32,13 @@ public class TransactionLogs {
     @Column(name = "updated_at")
     private Date updated_at;
 
+    public static TransactionLogs mapperCreateLogs(TransactionLogsDto transactionLogsDto){
+        TransactionLogs transactionLogs = new TransactionLogs();
+        transactionLogs.setMemberId(transactionLogsDto.getMemberId());
+        transactionLogs.setMemberName(transactionLogsDto.getMemberName());
+        transactionLogs.setTransactionType(transactionLogsDto.getTransactionType());
+        transactionLogs.setAmount((transactionLogsDto.getAmount()));
+        transactionLogs.setCreated_at(transactionLogsDto.getCreated_at());
+        return transactionLogs;
+    }
 }

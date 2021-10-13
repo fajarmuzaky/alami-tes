@@ -5,12 +5,11 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KafkaProducerServiceImpl implements KafkaProducerService {
+public class KafkaPublisherService {
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
-    @Override
     public void sendMessage(String topic, String message) {
         kafkaTemplate.send(topic, message);
     }

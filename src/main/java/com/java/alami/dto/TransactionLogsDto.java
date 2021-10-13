@@ -1,6 +1,7 @@
 package com.java.alami.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.java.alami.constants.TransactionTypes;
 import com.java.alami.entity.Member;
 import com.java.alami.entity.Transaction;
@@ -11,13 +12,24 @@ import java.util.Date;
 
 @Data
 public class TransactionLogsDto {
-    private Long id;
+
+//    @JsonProperty("id")
+//    private Long id;
+
+    @JsonProperty("member_id")
     private Long memberId;
+
+    @JsonProperty("member_name")
     private String memberName;
+
+    @JsonProperty("transaction_type")
     private String transactionType;
+
+    @JsonProperty("amount")
     private Integer amount;
 
     @JsonFormat(pattern="dd-MMMM-yyyy")
+    @JsonProperty("created_at")
     private Date created_at;
 
     @JsonFormat(pattern="dd-MMMM-yyyy")
@@ -25,8 +37,8 @@ public class TransactionLogsDto {
 
     public TransactionLogsDto() {}
 
-    public TransactionLogsDto(Long id, Long memberId, String memberName, int transactionType, Integer amount, Date created_at){
-        this.id = id;
+    public TransactionLogsDto(Long memberId, String memberName, int transactionType, Integer amount, Date created_at){
+//        this.id = id;
         this.memberId = memberId;
         this.memberName = memberName;
         this.transactionType = TransactionTypes.getTransactionTypeName(transactionType);
@@ -36,10 +48,9 @@ public class TransactionLogsDto {
 
     public static TransactionLogsDto create(TransactionLogs transactionLogs){
         TransactionLogsDto transactionLogsDto = new TransactionLogsDto();
-        transactionLogsDto.setId(transactionLogs.getId());
         transactionLogsDto.setMemberId(transactionLogs.getMemberId());
         transactionLogsDto.setMemberName(transactionLogs.getMemberName());
-        transactionLogsDto.setTransactionType(TransactionTypes.getTransactionTypeName(transactionLogs.getTransactionType()));
+        transactionLogsDto.setTransactionType(transactionLogs.getTransactionType());
         transactionLogsDto.setAmount(transactionLogs.getAmount());
         transactionLogsDto.setCreated_at(transactionLogs.getCreated_at());
         transactionLogsDto.setUpdated_at(transactionLogs.getUpdated_at());

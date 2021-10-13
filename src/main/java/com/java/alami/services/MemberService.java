@@ -52,7 +52,7 @@ public class MemberService {
 
     public Member getMemberById(Long id) {
         Optional<Member> member = memberRepository.findById(id);
-        if(member.isEmpty()) {
+        if(! member.isPresent()) {
             throw new RuntimeException("cannot found user with id " + id);
         }
 

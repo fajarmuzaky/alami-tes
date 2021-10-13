@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
@@ -36,7 +38,6 @@ public class DepositService {
             throw new RuntimeException("Cannot find member with email " + email);
         }
         Deposit checkDeposit = depositRepository.findByIdMember(member);
-        Date date = new Date();
         deposit.setMember(member);
         deposit.setCreated_at(created_at);
         if( checkDeposit != null){

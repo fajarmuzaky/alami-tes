@@ -34,10 +34,12 @@ This tables shows which features that has been implemented by this repository.
 # How to Run this project
 
 - Clone this project
-- Open this project with your IDE
 - Create database on postgre "alami_transaction"
 - Create database on Mongodb "alami_transaction"
-- Run and build this project
+- Open this project with your IDE
+- Open your terminal IDE
+- Run on terminal "docker-compose up" (for running kakfa)
+- Run project on your IDE
 - import the collection postman for test endpoint
     
 

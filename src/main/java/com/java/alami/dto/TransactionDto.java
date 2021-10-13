@@ -15,7 +15,7 @@ public class TransactionDto {
     private String transactionType;
     private Integer amount;
 
-    @JsonFormat(pattern="dd-MMMM-yyyy")
+    @JsonFormat(pattern="dd-MMMM-yyyy", timezone="Asia/Jakarta")
     private Date created_at;
 
     @JsonFormat(pattern="dd-MMMM-yyyy")
